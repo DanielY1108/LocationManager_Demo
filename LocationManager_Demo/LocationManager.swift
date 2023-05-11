@@ -14,7 +14,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
     private let locationManager = CLLocationManager()
     // 동작을 담아주기 위해 클로저를 만들어 줌
-    private var didFetchLocation: FetchLocationCompletion?
+    private var fetchLocationCompletion: FetchLocationCompletion?
     
     override init() {
         super.init()
@@ -52,7 +52,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         startUpdatingLocation()
         
         // completion 동작을 didFetchLocation 동작에 담는다.
-        self.didFetchLocation = completion
+        self.fetchLocationCompletion = completion
         
         // 위치 값을 받은 후 새로운 이벤트를 받기위해 정지를 시켜줍니다.
         self.stopUpdatingLocation()
@@ -68,13 +68,13 @@ extension LocationManager {
         let coordinate = location.coordinate
         
         // coordinate 값을 갖고 저장된 동작을 실행
-        self.didFetchLocation?(coordinate, nil)
+        self.fetchLocationCompletion?(coordinate, nil)
     }
     
     // 잠재적인 오류에 응답하기 위해서 생성
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Unable to Fetch Location (\(error))")
         
-        self.didFetchLocation?(nil, error)
+        self.fetchLocationCompletion?(nil, error)
     }
 }
