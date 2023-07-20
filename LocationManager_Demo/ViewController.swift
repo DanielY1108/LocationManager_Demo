@@ -13,11 +13,20 @@ class ViewController: UIViewController {
     var button: UIButton!
     
     var locationManager = LocationManager()
+    var location: CLLocationCoordinate2D?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupButton()
+        setupLocation()
+    }
+    
+    // 현재 위치 정보 저장
+    func setupLocation() {
+        locationManager.fetchLocation { [weak self] (location, error) in
+            self?.location = location
+        }
     }
     
     func setupButton() {
@@ -30,8 +39,6 @@ class ViewController: UIViewController {
     }
     
     @objc func buttonHandler(_ sender: UIButton) {
-        locationManager.fetchLocation { location, error in
-            print(location)
-        }
+        print(location)
     }
 }
